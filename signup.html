@@ -45,8 +45,28 @@
 			console.log(data.data)
 			var status = data.flag;
 			if (status == true){
-				alert("login successfully")
-				window.location.href='./login.html?name='+username+'&pwd='+pwd;
+				$.ajax({
+                    url: 'http://127.0.0.1:8080/api/v1/user',
+                    method: 'post',
+                    data: {'name':username,'pwd':pwd},
+                    dataType: 'json',
+                    async : false,   
+                    cache : false,
+                    success:function(data){
+                        console.log(data)
+                        console.log(data.data)
+                        var status = data.data;
+                        if (status == true){
+                            alert("注册成功啦")
+                            window.location.href='./form-news.html?name='+username+'&pwd='+pwd;
+                        }else{
+                            alert("login failed")
+                        }
+                    },
+                    error:function(data){
+                        console.log(data)
+                    }
+                })
 			}else{
 				alert("这个用户名被注册过了哦，换一个吧")
 			}
@@ -91,7 +111,7 @@
                     <div class="am-form-group">
 						<input type="email" class="" id="email" placeholder="邮箱可以用来找回密码哦">
 					</div>
-					<p><button type="button" class="am-btn am-btn-default" onclick="login()">决定好啦</button></p>
+					<p><button type="button" class="am-btn am-btn-default" onclick="login()">直接登录啦</button></p>
 				</fieldset>
 			</form>
 		</div>
