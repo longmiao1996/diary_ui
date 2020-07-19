@@ -136,7 +136,7 @@
 
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick" id="nick_name"></span><span class="tpl-header-list-user-ico"> <img src="assets/img/user01.png"></span>
+                        <span class="tpl-header-list-user-nick" id="nick_name"></span><span class="tpl-header-list-user-ico"> <img id="image_address"></span>
                     </a>
                     <ul class="am-dropdown-content">
                         <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
@@ -1053,9 +1053,14 @@
         }
         var arr = getRequest();
         var nick_name = arr['nick_name'];//参数名
+        var image_address = arr['image_address']
         console.log(nick_name)
+        console.log(image_address)
         // $('#nick_name').html(nick_name)
         document.getElementById("nick_name").innerText = nick_name;
+        // document.getElementById("image_address").attr = image_address;
+        var pic = document.getElementById("image_address")
+        pic.src = image_address
 
 </script>
 
