@@ -42,9 +42,10 @@
 			console.log(data)
 			console.log(data.data)
 			var status = data.data;
+			var nick_name = data.nick_name;
 			if (status == true){
 				alert("login successfully")
-				window.location.href='./form-news.html?name='+username+'&pwd='+pwd;
+				window.location.href='./form-news.html?nick_name='+nick_name+'&pwd='+pwd;
 			}else{
 				alert("login failed")
 			}
@@ -74,10 +75,10 @@
 			<form class="am-form">
 				<fieldset>
 					<div class="am-form-group">
-						<input type="email" class="" id="doc-ipt-email-1" placeholder="输入电子邮件">
+						<input type="email" class="" id="doc-ipt-email-1" placeholder="输入用户名，不是昵称哦">
 					</div>
 					<div class="am-form-group">
-						<input type="password" class="" id="doc-ipt-pwd-1" placeholder="设置个密码吧">
+						<input type="password" class="" id="doc-ipt-pwd-1" placeholder="输入密码吧">
 					</div>
 					<p><button type="button" class="am-btn am-btn-default" onclick="login()">登录</button></p>
 				</fieldset>

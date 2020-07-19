@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="assets/css/admin.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <script src="assets/js/echarts.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/iscroll.js"></script>
+    <script src="assets/js/app.js"></script>
 </head>
 
 <body data-type="index">
@@ -132,7 +136,7 @@
 
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick">禁言小张</span><span class="tpl-header-list-user-ico"> <img src="assets/img/user01.png"></span>
+                        <span class="tpl-header-list-user-nick" id="nick_name"></span><span class="tpl-header-list-user-ico"> <img src="assets/img/user01.png"></span>
                     </a>
                     <ul class="am-dropdown-content">
                         <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
@@ -1032,11 +1036,27 @@
 
     </div>
 
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/amazeui.min.js"></script>
-    <script src="assets/js/iscroll.js"></script>
-    <script src="assets/js/app.js"></script>
 </body>
+
+<script type="text/javascript">
+    function getRequest() {   
+        var url = window.location.search; //获取url中"?"符后的字串   
+        var theRequest = new Object();   
+        if (url.indexOf("?") != -1) {   
+            var str = url.substr(1);   
+            strs = str.split("&");   
+            for(var i = 0; i < strs.length; i ++) {   
+                theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]); 
+            }   
+        }   
+        return theRequest;   
+        }
+        var arr = getRequest();
+        var nick_name = arr['nick_name'];//参数名
+        console.log(nick_name)
+        // $('#nick_name').html(nick_name)
+        document.getElementById("nick_name").innerText = nick_name;
+
+</script>
 
 </html>
