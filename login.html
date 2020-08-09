@@ -42,11 +42,11 @@
 			console.log(data)
 			console.log(data.data)
 			var status = data.data;
-			var nick_name = data.nick_name;
+			var user_name = data.user_name;
 			var image_address = data.image_address;
 			if (status == true){
 				alert("login successfully")
-				window.location.href='./index.html?nick_name='+nick_name+'&image_address='+image_address;
+				window.location.href='./index.html?user_name='+username;
 			}else{
 				alert("login failed")
 			}
