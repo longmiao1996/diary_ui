@@ -18,6 +18,66 @@
     <link rel="stylesheet" href="assets/css/app.css">
 </head>
 
+<script type="text/javascript">
+    login = function(){
+	   var username = document.getElementById("name").value;
+	   var pwd = document.getElementById("pwd").value;
+       var nick_name = document.getElementById("nick_name").value;
+       var email = document.getElementById("email").value
+	   // var xhr = new XMLHttpRequest();
+	   // xhr.open('post','127.0.0.1:8080/api/v1/user');
+	   // xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	   // xhr.send('提交给服务器数据');
+	   $.ajax({
+		url: 'http://127.0.0.1:8080/api/v1/adduser',
+		method: 'post',
+		data: {'name':username,'nick_name':nick_name,'pwd':pwd,'email':email},
+		dataType: 'json',
+		async : false,   
+		cache : false,
+		success:function(data){
+			console.log(data)
+			console.log(data.data)
+			var status = data.flag;
+			if (status == true){
+				$.ajax({
+                    url: 'http://127.0.0.1:8080/api/v1/user',
+                    method: 'post',
+                    data: {'name':username,'pwd':pwd},
+                    dataType: 'json',
+                    async : false,   
+                    cache : false,
+                    success:function(data){
+                        console.log(data)
+                        console.log(data.data)
+                        var status = data.data;
+                        var nick_name = data.nick_name;
+                        var image_address = data.image_address;
+                        if (image_address == ""){
+                            image_address = "assets/img/user01.png"
+                        }
+                        if (status == true){
+                            alert("注册成功啦")
+                            window.location.href='./index.html?user_name='+username;
+                        }else{
+                            alert("login failed")
+                        }
+                    },
+                    error:function(data){
+                        console.log(data)
+                    }
+                })
+			}else{
+				alert("这个用户名被注册过了哦，换一个吧")
+			}
+		},
+		error:function(data){
+			console.log(data)
+		}
+	})
+}
+</script>
+
 <body data-type="generalComponents">
 
 
@@ -281,22 +341,22 @@
                         <div class="tpl-form-body tpl-form-line">
                             <form class="am-form tpl-form-line-form">
                                 <div class="am-form-group">
-                                    <label for="user-name" class="am-u-sm-3 am-form-label">标题 <span class="tpl-form-line-small-title">Title</span></label>
+                                    <label for="user-name" id="title" class="am-u-sm-3 am-form-label">标题 <span class="tpl-form-line-small-title">Title</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="text" class="tpl-form-input" id="user-name" placeholder="请输入标题文字">
-                                        <small>请填写标题文字10-20字左右。</small>
+                                        <small>随意填不填</small>
                                     </div>
                                 </div>
 
-                                <div class="am-form-group">
+                                <!-- <div class="am-form-group">
                                     <label for="user-email" class="am-u-sm-3 am-form-label">发布时间 <span class="tpl-form-line-small-title">Time</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="text" class="am-form-field tpl-form-no-bg" placeholder="发布时间" data-am-datepicker="" readonly/>
                                         <small>发布时间为必填</small>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="am-form-group">
+                                <!-- <div class="am-form-group">
                                     <label for="user-phone" class="am-u-sm-3 am-form-label">作者 <span class="tpl-form-line-small-title">Author</span></label>
                                     <div class="am-u-sm-9">
                                         <select data-am-selected="{searchBox: 1}">
@@ -305,31 +365,17 @@
   <option value="o">Orange</option>
 </select>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="am-form-group">
+                                <!-- <div class="am-form-group">
                                     <label class="am-u-sm-3 am-form-label">SEO关键字 <span class="tpl-form-line-small-title">SEO</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="text" placeholder="输入SEO关键字">
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="am-form-group">
-                                    <label for="user-weibo" class="am-u-sm-3 am-form-label">封面图 <span class="tpl-form-line-small-title">Images</span></label>
-                                    <div class="am-u-sm-9">
-                                        <div class="am-form-group am-form-file">
-                                            <div class="tpl-form-file-img">
-                                                <img src="assets/img/a5.png" alt="">
-                                            </div>
-                                            <button type="button" class="am-btn am-btn-danger am-btn-sm">
-    <i class="am-icon-cloud-upload"></i> 添加封面图片</button>
-                                            <input id="doc-form-file" type="file" multiple>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="am-form-group">
+                                
+                                <!-- <div class="am-form-group">
                                     <label for="user-weibo" class="am-u-sm-3 am-form-label">添加分类 <span class="tpl-form-line-small-title">Type</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="text" id="user-weibo" placeholder="请添加分类用点号隔开">
@@ -337,9 +383,9 @@
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="am-form-group">
+                                <!-- <div class="am-form-group">
                                     <label for="user-intro" class="am-u-sm-3 am-form-label">隐藏文章</label>
                                     <div class="am-u-sm-9">
                                         <div class="tpl-switch">
@@ -351,12 +397,27 @@
                                         </div>
 
                                     </div>
+                                </div> -->
+
+                                <div class="am-form-group">
+                                    <label for="user-intro" id="article" class="am-u-sm-3 am-form-label">文章内容</label>
+                                    <div class="am-u-sm-9">
+                                        <textarea class="" rows="10" id="user-intro" placeholder="请输入文章内容"></textarea>
+                                    </div>
                                 </div>
 
                                 <div class="am-form-group">
-                                    <label for="user-intro" class="am-u-sm-3 am-form-label">文章内容</label>
+                                    <label for="user-weibo" class="am-u-sm-3 am-form-label">图片 <span class="tpl-form-line-small-title">Images</span></label>
                                     <div class="am-u-sm-9">
-                                        <textarea class="" rows="10" id="user-intro" placeholder="请输入文章内容"></textarea>
+                                        <div class="am-form-group am-form-file">
+                                            <div class="tpl-form-file-img">
+                                                <!-- <img src="assets/img/a5.png" alt=""> -->
+                                            </div>
+                                            <button type="button" class="am-btn am-btn-danger am-btn-sm">
+    <i class="am-icon-cloud-upload"></i> 添加图片</button>
+                                            <input id="doc-form-file" type="file" multiple>
+                                        </div>
+
                                     </div>
                                 </div>
 
