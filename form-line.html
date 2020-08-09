@@ -19,63 +19,69 @@
 </head>
 
 <script type="text/javascript">
-    login = function(){
-	   var username = document.getElementById("name").value;
-	   var pwd = document.getElementById("pwd").value;
-       var nick_name = document.getElementById("nick_name").value;
-       var email = document.getElementById("email").value
+    var base64Img = ""
+    function Tobase64() {
+        let fileObj = document.getElementById('doc-form-file').files[0]  //获取文件对象
+        let reader = new FileReader()   //新建一个FileReader对象
+        reader.readAsDataURL(fileObj)   //将读取的文件转换成base64格式
+        reader.onload = function(e) {
+            const base64Img = e.target.result
+            document.getElementById('doc-form-image').src = e.target.result    //将img标签的src换成base64格式，并显示出来
+        }
+    }
+
+    commit_infos = function(){
+        var title = document.getElementById("title").value;
+        var article = document.getElementById("article").value;
+        var fileObj = document.getElementById('doc-form-file').files[0]  //获取文件对象
+        var image_address = fileObj["name"]
+        var reader = new FileReader()   //新建一个FileReader对象
+        reader.readAsDataURL(fileObj)   //将读取的文件转换成base64格式
+        reader.onload = function(e) {
+            const base64Img = e.target.result
+            // document.getElementById('doc-form-image').src = e.target.result
+            console.log(base64Img)
+            $.ajax({
+                url: 'http://127.0.0.1:8080/api/v1/addinfos',
+                method: 'post',
+                data: {'userName':"miaol",'nickName':"hide",'title':title,'article':article,'imageAddr':base64Img},
+                dataType: 'json',
+                async : false,   
+                cache : false,
+                success:function(data){
+                    console.log(data)
+                    console.log(data.data)
+                    var status = data.flag;
+                },
+                error:function(data){
+                    console.log(data)
+                }
+	        })
+        }
+        // var image_base64 = e.base64Img
 	   // var xhr = new XMLHttpRequest();
 	   // xhr.open('post','127.0.0.1:8080/api/v1/user');
 	   // xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	   // xhr.send('提交给服务器数据');
-	   $.ajax({
-		url: 'http://127.0.0.1:8080/api/v1/adduser',
-		method: 'post',
-		data: {'name':username,'nick_name':nick_name,'pwd':pwd,'email':email},
-		dataType: 'json',
-		async : false,   
-		cache : false,
-		success:function(data){
-			console.log(data)
-			console.log(data.data)
-			var status = data.flag;
-			if (status == true){
-				$.ajax({
-                    url: 'http://127.0.0.1:8080/api/v1/user',
-                    method: 'post',
-                    data: {'name':username,'pwd':pwd},
-                    dataType: 'json',
-                    async : false,   
-                    cache : false,
-                    success:function(data){
-                        console.log(data)
-                        console.log(data.data)
-                        var status = data.data;
-                        var nick_name = data.nick_name;
-                        var image_address = data.image_address;
-                        if (image_address == ""){
-                            image_address = "assets/img/user01.png"
-                        }
-                        if (status == true){
-                            alert("注册成功啦")
-                            window.location.href='./index.html?user_name='+username;
-                        }else{
-                            alert("login failed")
-                        }
-                    },
-                    error:function(data){
-                        console.log(data)
-                    }
-                })
-			}else{
-				alert("这个用户名被注册过了哦，换一个吧")
-			}
-		},
-		error:function(data){
-			console.log(data)
-		}
-	})
+	//    $.ajax({
+	// 	url: 'http://127.0.0.1:8080/api/v1/addinfos',
+	// 	method: 'post',
+	// 	data: {'userName':"miaol",'nickName':"hide",'title':title,'article':article,'imageAddr':base64Img},
+	// 	dataType: 'json',
+	// 	async : false,   
+	// 	cache : false,
+	// 	success:function(data){
+	// 		console.log(data)
+	// 		console.log(data.data)
+	// 		var status = data.flag;
+	// 	},
+	// 	error:function(data){
+	// 		console.log(data)
+	// 	}
+	// })
+    
 }
+
 </script>
 
 <body data-type="generalComponents">
@@ -341,9 +347,9 @@
                         <div class="tpl-form-body tpl-form-line">
                             <form class="am-form tpl-form-line-form">
                                 <div class="am-form-group">
-                                    <label for="user-name" id="title" class="am-u-sm-3 am-form-label">标题 <span class="tpl-form-line-small-title">Title</span></label>
+                                    <label for="user-name" class="am-u-sm-3 am-form-label">标题 <span class="tpl-form-line-small-title">Title</span></label>
                                     <div class="am-u-sm-9">
-                                        <input type="text" class="tpl-form-input" id="user-name" placeholder="请输入标题文字">
+                                        <input type="text" id="title" class="tpl-form-input" id="user-name" placeholder="请输入标题文字">
                                         <small>随意填不填</small>
                                     </div>
                                 </div>
@@ -400,9 +406,9 @@
                                 </div> -->
 
                                 <div class="am-form-group">
-                                    <label for="user-intro" id="article" class="am-u-sm-3 am-form-label">文章内容</label>
+                                    <label for="user-intro" class="am-u-sm-3 am-form-label">文章内容</label>
                                     <div class="am-u-sm-9">
-                                        <textarea class="" rows="10" id="user-intro" placeholder="请输入文章内容"></textarea>
+                                        <textarea class="" id="article" rows="10" id="user-intro" placeholder="请输入文章内容"></textarea>
                                     </div>
                                 </div>
 
@@ -411,11 +417,11 @@
                                     <div class="am-u-sm-9">
                                         <div class="am-form-group am-form-file">
                                             <div class="tpl-form-file-img">
-                                                <!-- <img src="assets/img/a5.png" alt=""> -->
+                                                <img id="doc-form-image" src="assets/img/a5.png" alt="">
                                             </div>
                                             <button type="button" class="am-btn am-btn-danger am-btn-sm">
-    <i class="am-icon-cloud-upload"></i> 添加图片</button>
-                                            <input id="doc-form-file" type="file" multiple>
+                                            <i class="am-icon-cloud-upload"></i> 添加图片</button>
+                                            <input id="doc-form-file" type="file" onchange="Tobase64()" multiple>
                                         </div>
 
                                     </div>
@@ -423,7 +429,7 @@
 
                                 <div class="am-form-group">
                                     <div class="am-u-sm-9 am-u-sm-push-3">
-                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        <button type="button" onclick="commit_infos()" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
                                     </div>
                                 </div>
                             </form>
