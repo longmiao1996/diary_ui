@@ -43,10 +43,11 @@
 			console.log(data.data)
 			var status = data.data;
 			var user_name = data.user_name;
+			var nick_name = data.nick_name;
 			var image_address = data.image_address;
 			if (status == true){
 				alert("login successfully")
-				window.location.href='./index.html?user_name='+username;
+				window.location.href='./index.html?user_name='+username+'&nick_name='+nick_name;
 			}else{
 				alert("login failed")
 			}
@@ -56,6 +57,25 @@
 		}
 	})
 }
+// 	function get_user_infos(user_name){
+// 		$.ajax({
+// 		url: 'http://127.0.0.1:8080/api/v1/userinfos',
+// 		method: 'get',
+// 		data: {'username':user_name},
+// 		dataType: 'json',
+// 		async : false,   
+// 		cache : false,
+// 		success:function(data){
+// 			console.log(data)
+// 			console.log(data.data)
+// 			var nick_name = data.nick_name;
+// 		},
+// 		error:function(data){
+// 			console.log(data)
+// 		}
+// 	})
+// 		return nick_name
+// }
 </script>
 
 <body data-type="login">

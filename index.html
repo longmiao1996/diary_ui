@@ -1055,14 +1055,15 @@
         }
         var arr = getRequest();
         var user_name = arr['user_name'];//参数名
+        var nick_name = arr['nick_name'];//参数名
         // var image_address = arr['image_address']
         console.log(nick_name)
         // $('#nick_name').html(nick_name)
-        document.getElementById("nick_name").innerText = user_name;
+        document.getElementById("nick_name").innerText = nick_name;
         // document.getElementById("image_address").attr = image_address;
         var pic = document.getElementById("image_address")
         pic.src = image_address
-        document.getElementById("write").href='./form-line.html?nick_name='+nick_name+'&image_address='+image_address;
+        document.getElementById("write").href='./form-line.html?nick_name='+nick_name+'&user_name='+user_name;
 
 </script>
 

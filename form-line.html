@@ -19,7 +19,18 @@
 </head>
 
 <script type="text/javascript">
-    var base64Img = ""
+    function getRequest() {   
+        var url = window.location.search; //获取url中"?"符后的字串   
+        var theRequest = new Object();   
+        if (url.indexOf("?") != -1) {   
+            var str = url.substr(1);   
+            strs = str.split("&");   
+            for(var i = 0; i < strs.length; i ++) {   
+                theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]); 
+            }   
+        }   
+        return theRequest;   
+        }
     function Tobase64() {
         let fileObj = document.getElementById('doc-form-file').files[0]  //获取文件对象
         let reader = new FileReader()   //新建一个FileReader对象
@@ -34,9 +45,12 @@
         var title = document.getElementById("title").value;
         var article = document.getElementById("article").value;
         var fileObj = document.getElementById('doc-form-file').files[0]  //获取文件对象
-        var image_address = fileObj["name"]
+        var imageName = fileObj["name"]
         var reader = new FileReader()   //新建一个FileReader对象
         reader.readAsDataURL(fileObj)   //将读取的文件转换成base64格式
+        var arr = getRequest();
+        var user_name = arr['user_name'];//参数名
+        var nick_name = arr['nick_name'];//参数名
         reader.onload = function(e) {
             const base64Img = e.target.result
             // document.getElementById('doc-form-image').src = e.target.result
@@ -44,7 +58,7 @@
             $.ajax({
                 url: 'http://127.0.0.1:8080/api/v1/addinfos',
                 method: 'post',
-                data: {'userName':"miaol",'nickName':"hide",'title':title,'article':article,'imageAddr':base64Img},
+                data: {'userName':user_name,'nickName':nick_name,'title':title,'article':article,'imagebase64':base64Img,'imageName':imageName},
                 dataType: 'json',
                 async : false,   
                 cache : false,
@@ -52,6 +66,9 @@
                     console.log(data)
                     console.log(data.data)
                     var status = data.flag;
+                    if (status ==true){
+                        alert("OK啦")
+                    }
                 },
                 error:function(data){
                     console.log(data)
